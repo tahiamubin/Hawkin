@@ -4,6 +4,10 @@ import { FaArrowRight } from "react-icons/fa";
 import { PiDogFill } from "react-icons/pi";
 import BannerCard from "./BannerCard";
 import PetCard from "./PetCard";
+import WhyAdopt from "./WhyAdopt";
+import { SuccessIcon } from "@heroui/react";
+import SuccessStories from "./SuccessStories";
+import PetCare from "./PetCare";
 
 const Banner = async () => {
   const res = await fetch("http://localhost:5000/all-pet");
@@ -93,6 +97,14 @@ const Banner = async () => {
         </div>
       </div>
 
+      {/* why adopt */}
+      <WhyAdopt></WhyAdopt>
+
+      {/* success */}
+      <SuccessStories></SuccessStories>
+
+      {/* pet care */}
+      <PetCare></PetCare>
       <BannerCard></BannerCard>
     </div>
   );
