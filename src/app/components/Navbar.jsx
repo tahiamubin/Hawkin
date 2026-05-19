@@ -1,20 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
-
 const Navbar = () => {
-  const Links = (
+  const MobileLinks = (
     <>
       <li>
         <Link href={"/"}>Home</Link>
       </li>
       <li>
+        <Link href={"/allpets"}>All pets</Link>
+
         <a>All Pets</a>
       </li>
       <li>
         <details>
           <summary>Dashboard</summary>
-          <ul className="menu dropdown-content absolute p-2 bg-base-100 rounded-box w-40 z-[999] shadow">
+          <ul className="p-2 bg-base-100 rounded-box w-40 z-[999] shadow">
             <li>
               <a>My request</a>
             </li>
@@ -29,9 +32,30 @@ const Navbar = () => {
       </li>
     </>
   );
+
+  const DesktopLinks = (
+    <>
+      <li>
+        <Link href={"/"}>Home</Link>
+      </li>
+      <li>
+        <Link href={"/allpets"}>All pets</Link>
+      </li>
+      <li>
+        <a>My request</a>
+      </li>
+      <li>
+        <Link href={"/dashboard/add-pet"}>Add pet</Link>
+      </li>
+      <li>
+        <a>My listings</a>
+      </li>
+    </>
+  );
+
   return (
-    <div className=" bg-[#fff5f0] sticky top-0 z-50">
-      <div className="navbar  shadow-sm ">
+    <div className="bg-[#fff5f0] sticky top-0 z-50">
+      <div className="navbar shadow-sm">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -42,22 +66,21 @@ const Navbar = () => {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                {" "}
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
                   d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
+                />
               </svg>
             </div>
 
             <div>
               <ul
-                tabIndex="-1"
+                tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[999] mt-3 w-52 p-2 shadow"
               >
-                {Links}
+                {MobileLinks}
               </ul>
             </div>
           </div>
@@ -66,14 +89,11 @@ const Navbar = () => {
             alt="logo"
             width={150}
             height={150}
-          ></Image>
+          />
         </div>
-        <div className="navbar-center hidden  lg:flex ">
-          <ul className="menu  menu-horizontal px-1">{Links}</ul>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">{DesktopLinks}</ul>
         </div>
-        {/* <div className="navbar-end">
-        <a className="btn">Button</a>
-      </div> */}
       </div>
     </div>
   );
