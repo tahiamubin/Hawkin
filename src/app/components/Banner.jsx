@@ -34,7 +34,7 @@ const Banner = async () => {
               Bangladesh's #1 Adoption Platform
             </div>
             <h1 className="text-6xl font-bold">
-              Find a <span className="text-[#3D6B4F]">loving home</span> for
+              Find a <span className="text-[#3D6B4F] text-italic font-serif">loving home</span> for
               every paw
             </h1>
             <p className="py-6 text-xl">
@@ -44,19 +44,19 @@ const Banner = async () => {
 
             <div className="grid grid-cols-3 gap-4 container mx-auto mt-5">
               <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-5xl font-bold text-[#3D6B4F] ">
+                <h2 className="card-title text-5xl font-bold text-[#3D6B4F]  text-italic font-serif">
                   2500+
                 </h2>
                 <p>Pets available</p>
               </div>
               <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-5xl font-bold text-[#3D6B4F]">
+                <h2 className="card-title text-5xl font-bold text-[#3D6B4F] text-italic font-serif">
                   940
                 </h2>
                 <p>Adopted this month</p>
               </div>
               <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-5xl font-bold text-[#3D6B4F]">
+                <h2 className="card-title text-5xl font-bold text-[#3D6B4F] text-italic font-serif">
                   120+
                 </h2>
                 <p>Partner shelters</p>

@@ -1,39 +1,22 @@
-import {
-  Button,
-  FieldError,
-  Input,
-  Label,
-  TextField,
-  Select,
-  ListBox,
-  TextArea,
-} from "@heroui/react";
+
+
+
 import Image from "next/image";
-import React from "react";
+
 import { FaGem, FaLocationDot } from "react-icons/fa6";
 import { MdHealthAndSafety } from "react-icons/md";
 import { PiGenderMaleFill } from "react-icons/pi";
 import { TbCoinTakaFilled, TbVaccine } from "react-icons/tb";
-//   "_id": "6a0c0f4a27970a1b25e967e4",
-// "petName": "Bubby",
-// "breed": "Golden Retriever",
-// "species": "Dog",
-// "gender": "Male",
-// "age": "2 years",
-// "health": "good",
-// "vaccine": "vaccinated",
-// "location": "Dhaka",
-// "fee": "150",
-// "imageUrl": "https://cdn.pixabay.com/photo/2018/03/31/06/31/dog-3277416_960_720.jpg",
-// "email": "amin12@gmail.com",
-// "description": "Buddy is a friendly and energet
+import AdoptRequest from "./AdoptRequest";
 
 const PetDetailsPage = async ({ params }) => {
   const { id } = await params;
+
   const res = await fetch(`http://localhost:5000/all-pet/${id}`);
   const pet = await res.json();
+
   //console.log(pet)
-  const {
+    const {
     _id,
     petName,
     breed,
@@ -133,63 +116,8 @@ const PetDetailsPage = async ({ params }) => {
           </div>
         </div>
 
-        <form className="p-10 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* pet Name */}
-            <div className="md:col-span-2">
-              <TextField name="petName" isRequired>
-                <Label>pet Name</Label>
-                <Input
-                  placeholder={petName}
-                  className="rounded-2xl bg-gray-100 cursor-default"
-                  readOnly
-                />
-                <FieldError />
-              </TextField>
-            </div>
-            {/* after adding session */}
-            {/* your name */}
-            <div className="md:col-span-2">
-              <TextField name="Name" isRequired>
-                <Label>Your Name</Label>
-                <Input placeholder="Name" className="rounded-2xl" readOnly />
-                <FieldError />
-              </TextField>
-            </div>
-            {/* email */}
-            <div className="md:col-span-2">
-              <TextField name="email" type="email" isRequired>
-                <Label>Email</Label>
-                <Input
-                  placeholder="admin12@gmail.com"
-                  className="rounded-2xl"
-                />
-                <FieldError />
-              </TextField>
-            </div>
-            {/* pickup Date */}
-            <div className="md:col-span-2">
-              <TextField name="Pickup-date" type="date" isRequired>
-                <Label>Preferred Pickup Date</Label>
-                <Input type="date" className="rounded-2xl" />
-                <FieldError />
-              </TextField>
-            </div>
-
-            {/* Description */}
-            <div className="md:col-span-2">
-              <TextField name="description" isRequired>
-                <Label>Description</Label>
-                <TextArea placeholder="Describe ...." className="rounded-3xl" />
-                <FieldError />
-              </TextField>
-            </div>
-          </div>
-
-          {/* Buttons */}
-
-          <Button className={"bg-[#3D6B4F] w-full shadow-sm"}>Adopt Now</Button>
-        </form>
+        {/* right */}
+        <AdoptRequest pet={pet}></AdoptRequest>
       </div>
     </div>
   );
