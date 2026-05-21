@@ -146,7 +146,11 @@ const AdoptRequest = ({ pet }) => {
             <div className="md:col-span-2">
               <TextField name="name" type="text" isRequired>
                 <Label>Name</Label>
-                <Input placeholder="name" className="rounded-2xl" />
+                <Input
+                  placeholder={user?.name}
+                  className="rounded-2xl bg-gray-100 cursor-default"
+                  readOnly
+                />
                 <FieldError />
               </TextField>
             </div>
@@ -164,7 +168,11 @@ const AdoptRequest = ({ pet }) => {
               }}
             >
               <Label>Email</Label>
-              <Input placeholder="john@example.com" />
+              <Input
+                placeholder={user?.email}
+                className="rounded-2xl bg-gray-100 cursor-default"
+                readOnly
+              />
               <FieldError />
             </TextField>
             {/* pickup Date */}

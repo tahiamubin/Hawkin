@@ -28,13 +28,13 @@ const Navbar = () => {
           <summary>Dashboard</summary>
           <ul className="p-2 bg-base-100 rounded-box w-40 z-[999] shadow">
             <li>
-              <a>My request</a>
+              <Link href={"/dashboard/my-request"}>My request</Link>
             </li>
             <li>
               <Link href={"/dashboard/add-pet"}>Add pet</Link>
             </li>
             <li>
-              <Link href={"/my-listings"}>My listings</Link>
+              <Link href={"/dashboard/my-listings"}>My listings</Link>
             </li>
           </ul>
         </details>
