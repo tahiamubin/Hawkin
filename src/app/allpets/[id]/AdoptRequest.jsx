@@ -41,8 +41,6 @@ const AdoptRequest = ({ pet }) => {
       userImage: user?.image,
       _id,
       petName,
-      fee,
-      imageUrl,
       breed,
       species,
       gender,
@@ -54,7 +52,7 @@ const AdoptRequest = ({ pet }) => {
       vaccine,
       description,
     };
-    const res = await fetch("/http://localhost:5000/listing", {
+    const res = await fetch("http://localhost:5000/listing", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -62,8 +60,9 @@ const AdoptRequest = ({ pet }) => {
       body: JSON.stringify(listingData),
     });
     const data = await res.json();
+    console.log(data);
     toast.success("Added to My Listings");
-    //console.log(data);
+    setAdopt(true);
   };
 
   return (

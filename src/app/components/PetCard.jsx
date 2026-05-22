@@ -1,14 +1,15 @@
+"use client"
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { FaArrowRight } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { LuDot } from "react-icons/lu";
 import { TbCoinTakaFilled } from "react-icons/tb";
 
 const PetCard = ({ pet }) => {
- 
   const {
     _id,
     petName,
@@ -22,12 +23,18 @@ const PetCard = ({ pet }) => {
     imageUrl,
     description,
   } = pet;
+  const notify = () => toast("Added to all pet.");
 
   return (
     <div>
       <div className="card bg-base-100 w-96 shadow-sm bg-[#EBF3EE] hover:border border-[#3D6B4F] transition-all duration-300  hover:-translate-y-1 cursor-pointer">
-        <div className="relative w-full h-48 overflow-hidden rounded-t-lg" >
-          <Image src={imageUrl} alt="breed" fill className="object-cover"></Image>
+        <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+          <Image
+            src={imageUrl}
+            alt="breed"
+            fill
+            className="object-cover"
+          ></Image>
         </div>
 
         <div className="card-body">
@@ -65,14 +72,15 @@ const PetCard = ({ pet }) => {
                 Meet {petName} <FaArrowRight />
               </Button>
             </Link>
-
             <Button
+              onClick={notify}
               className={
                 " shadow-sm border-[#3D6B4F] bg-[#FBF8F3] text-[#3D6B4F]"
               }
             >
               Adopt Now
             </Button>
+             <Toaster />
           </div>
         </div>
       </div>
