@@ -1,50 +1,55 @@
 import { Sparkles } from "@gravity-ui/icons";
-import { Button, Modal } from "@heroui/react";
+import { AlertDialog, Button, Modal } from "@heroui/react";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-const DeleteAlertModal = () => {
+
+const DeleteAlertModal = ({listingId}) => {
+  const handleDelete = async () => {
+    const res = await fetch(`http://localhost:5000/listing/${listingId}` , {
+      method: 'DELETE',
+      headers: 
+     { 'content-type' : 'application/json'}
+    })
+   
+
+  }
   return (
     <div>
-      <Modal>
+      <AlertDialog>
+        {" "}
         <button className="btn btn-sm bg-[#3D6B4F] hover:bg-[#5A8F6E] rounded-xl px-4  text-white">
-          <RiDeleteBin6Line />
+          <RiDeleteBin6Line />{" "}
         </button>
-        <Modal.Backdrop
-          className="bg-linear-to-t from-black/80 via-black/40 to-transparent dark:from-zinc-800/80 dark:via-zinc-800/40"
-          variant="blur"
-        >
-          <Modal.Container>
-            <Modal.Dialog className="sm:max-w-[360px]">
-              <Modal.Header className="items-center text-center">
-                {/* <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-                  <Sparkles className="size-5" />
-                </Modal.Icon> */}
-                <Modal.Heading>Delete Pet Listing?</Modal.Heading>
-              </Modal.Header>
-              <Modal.Body>
+        <AlertDialog.Backdrop>
+          <AlertDialog.Container>
+            <AlertDialog.Dialog className="sm:max-w-[400px]">
+              <AlertDialog.CloseTrigger />
+              <AlertDialog.Header>
+                <AlertDialog.Icon status="danger" />
+                <AlertDialog.Heading>
+                  Delete this permanently?
+                </AlertDialog.Heading>
+              </AlertDialog.Header>
+              <AlertDialog.Body>
                 <p>
-                  Are you sure your want to permanently delete update{" "}
-                  <span className="font-black"> petName</span>
-                  listing? This cannot be undone
+                  This will permanently delete{" "}
+                  <strong>this pet</strong> and all of its data. This
+                  action cannot be undone.
                 </p>
-              </Modal.Body>
-              <Modal.Footer className="flex-col-reverse">
-                <Button className="w-full" slot="close" variant="danger">
-                  Delete permanently
+              </AlertDialog.Body>
+              <AlertDialog.Footer>
+                <Button slot="close" variant="tertiary">
+                  Cancel
                 </Button>
-                <Button
-                  className="w-full bg-[#FBF8F3] text-[#C8714A]"
-                  slot="close"
-                >
-                  Keep listing
+                <Button onClick={handleDelete} slot="close" variant="danger">
+                  Delete Project
                 </Button>
-              </Modal.Footer>
-              <Modal.CloseTrigger />
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
+              </AlertDialog.Footer>
+            </AlertDialog.Dialog>
+          </AlertDialog.Container>
+        </AlertDialog.Backdrop>
+      </AlertDialog>
     </div>
   );
 };

@@ -4,16 +4,19 @@ import { GrFormView } from "react-icons/gr";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import DeleteAlertModal from "./DeleteAlertModal";
 import RequestCheck from "./RequestCheck";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
+
 import Image from "next/image";
 
 const MyListings = ({ listing }) => {
   return (
     <div className="card bg-white w-80 shadow-lg rounded-2xl overflow-hidden border border-[#3D6B4F]">
       <figure className="relative">
-        <Image src={listing.imageUrl} height={500} weigth={500} alt={listing.species}>
-          
-        </Image>
+        <Image
+          src={listing.imageUrl}
+          height={500}
+          weigth={500}
+          alt={listing.species}
+        ></Image>
         <span className="absolute top-3 right-3 bg-[#3D6B4F] text-white text-xs font-semibold px-3 py-1 rounded-full">
           Available
         </span>
@@ -56,7 +59,7 @@ const MyListings = ({ listing }) => {
 
             {/* delete button */}
             <div>
-              <DeleteAlertModal></DeleteAlertModal>
+              <DeleteAlertModal listingId={listing._id}></DeleteAlertModal>
             </div>
           </div>
         </div>
