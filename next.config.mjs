@@ -8,8 +8,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.pixabay.com",
       },
-    ]
-  }
+      {
+        protocol: "https",
+        hostname: "en.wikipedia.org",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

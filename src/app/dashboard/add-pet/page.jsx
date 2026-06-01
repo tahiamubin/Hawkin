@@ -59,7 +59,7 @@ const AddPetPage = () => {
         headers,
         body: JSON.stringify(allPet),
       }),
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/listing`, {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/listings`, {
         method: "POST",
         headers,
         body: JSON.stringify({ ...allPet, userEmail: session?.user?.email }),
