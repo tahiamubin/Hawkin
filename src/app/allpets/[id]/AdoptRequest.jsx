@@ -7,19 +7,26 @@ import {
   Input,
   Label,
   TextField,
-  Select,
-  ListBox,
   TextArea,
 } from "@heroui/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { FaLock, FaCheck, FaUser, FaEnvelope, FaCalendar, FaFileAlt, FaPaw } from "react-icons/fa";
+import { TbCoinTakaFilled, TbVaccine } from "react-icons/tb";
+import { MdHealthAndSafety } from "react-icons/md";
+import { PiGenderMaleFill } from "react-icons/pi";
+import { FaLocationDot } from "react-icons/fa6";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { email } from "better-auth";
 
 const AdoptRequest = ({ pet }) => {
   const [adopt, setAdopt] = useState(false);
-  const [pickupDate, setPickupDate] = useState(null);
+  const [pickupDate, setPickupDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  //console.log(user)
+
   const {
     _id: petId,
     petName,
@@ -33,10 +40,18 @@ const AdoptRequest = ({ pet }) => {
     imageUrl,
     vaccine,
     description,
-  
+    email: petOwnerEmail,
   } = pet;
-  const isOwner = user?.email === pet.email
+
+  const isOwner = user?.email === petOwnerEmail;
+
   const handleListings = async () => {
+    if (!pickupDate) {
+      toast.error("Please select a pickup date");
+      return;
+    }
+
+    setIsLoading(true);
     const listingData = {
       userName: user?.name,
       userEmail: user?.email,
@@ -54,194 +69,218 @@ const AdoptRequest = ({ pet }) => {
       vaccine,
       description,
       pickupDate,
-      requestDate: new Date().toISOString()
+      requestDate: new Date().toISOString(),
     };
-    
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/listing`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(listingData),
-    });
-    const data = await res.json();
-    console.log(data);
-    toast.success("Added to My request");
-    setAdopt(true);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/listing`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(listingData),
+      });
+      const data = await res.json();
+      console.log(data);
+      toast.success(`Adoption request for ${petName} sent successfully! 🐾`);
+      setAdopt(true);
+    } catch (error) {
+      toast.error("Failed to send request. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return (
-    <div>
-      {
-       isOwner  ? (
-        // 👇 blocked state for the owner
-        <div className="ml-15">
-          <div className="card bg-yellow-50 border border-yellow-600 shadow-xl max-w-sm">
-            <div className="card-body flex-row items-start gap-4 p-5">
-              <div className="w-10 h-10 rounded-full bg-yellow-600 flex items-center justify-center shrink-0 mt-1">
-                {/* lock icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-              </div>
-              <div className="flex-1">
-                <h2 className="card-title text-yellow-800 text-xl font-bold">
-                  Can't adopt your own pet
-                </h2>
-                <p className="text-neutral-700 text-sm mt-1">
-                  You listed <span className="font-semibold">{petName}</span> for adoption. Manage it from{" "}
-                  <a href="/dashboard/my-listings" className="text-orange-600 underline font-medium">
-                    My Listings
-                  </a>.
-                </p>
-              </div>
+  // Owner can't adopt their own pet
+  if (isOwner) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="lg:sticky lg:top-24"
+      >
+        <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-3xl p-8 shadow-xl border-2 border-yellow-200 max-w-lg mx-auto">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+              <FaLock className="w-10 h-10 text-yellow-600" />
             </div>
-          </div>
-        </div>
-      ) :
-      adopt ? (
-        <div className="ml-15">
-          <div className="card bg-green-50 border border-green-700 shadow-xl max-w-sm ">
-            <div className="card-body flex-row items-start gap-4 p-5">
-              <div className="w-10 h-10 rounded-full bg-green-800 flex items-center justify-center shrink-0 mt-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-
-              <div className="flex-1">
-                <h2   className="card-title text-green-800 text-xl font-bold">
-                  Request Sent!
-                </h2>
-                <p className="text-neutral-900 text-sm mt-1">
-                  Your adoption request for{" "}
-                  <span className="font-semibold">{petName}</span> has been sent
-                  to the owner. You can track its status in the{" "}
-                  <a
-                    href={"/dashboard/my-request"}
-                    className="text-orange-600 underline font-medium"
-                  >
-                    My Request
-                  </a>{" "}
-                  page.
-                </p>
-              </div>
-
-              <button className="text-green-600 shrink-0 mt-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <form className="p-10 space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* pet Name */}
-            <div className="md:col-span-2">
-              <TextField name="petName" isRequired>
-                <Label>pet Name</Label>
-                <Input
-                  placeholder={petName}
-                  className="rounded-2xl bg-gray-100 cursor-default"
-                  readOnly
-                />
-                <FieldError />
-              </TextField>
-            </div>
-            {/* after adding session */}
-            {/* NAME */}
-            <div className="md:col-span-2">
-              <TextField name="name" type="text" isRequired>
-                <Label>Name</Label>
-                <Input
-                  placeholder={user?.name}
-                  className="rounded-2xl bg-gray-100 cursor-default"
-                  readOnly
-                />
-                <FieldError />
-              </TextField>
-            </div>
-            {/* email */}
-            <TextField
-              isRequired
-              name="email"
-              type="email"
-              className="md:col-span-2"
-              validate={(value) => {
-                if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-                  return "Please enter a valid email address";
-                }
-                return null;
-              }}
-            >
-              <Label>Email</Label>
-              <Input
-                placeholder={user?.email}
-                className="rounded-2xl bg-gray-100 cursor-default"
-                readOnly
-              />
-              <FieldError />
-            </TextField>
-            {/* pickup Date */}
-            <div className="md:col-span-2">
-              <TextField
-                onChange={setPickupDate}
-                name="Pickup-date"
-                type="date"
-                isRequired
+            <h2 className="text-2xl font-bold text-yellow-800 mb-2">
+              Can't Adopt Your Own Pet
+            </h2>
+            <p className="text-gray-600 mb-4">
+              You listed <span className="font-semibold text-yellow-700">{petName}</span> for adoption.
+              You can't adopt your own pet!
+            </p>
+            <div className="bg-white/80 rounded-xl p-4 w-full">
+              <p className="text-sm text-gray-500">
+                Manage your listing from
+              </p>
+              <Link
+                href="/dashboard/my-listings"
+                className="inline-flex items-center gap-2 mt-2 text-[#E07C3C] font-medium hover:text-[#C96B2E] transition-colors"
               >
-                <Label>Preferred Pickup Date</Label>
-                <Input type="date" className="rounded-2xl" />
-                <FieldError />
-              </TextField>
-            </div>
-
-            {/* Description */}
-            <div className="md:col-span-2">
-              <TextField name="description" isRequired>
-                <Label>Description</Label>
-                <TextArea placeholder="Describe ...." className="rounded-3xl" />
-                <FieldError />
-              </TextField>
+                <FaPaw className="text-xs" />
+                My Listings
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
           </div>
+        </div>
+      </motion.div>
+    );
+  }
 
-          {/* Buttons */}
+  // Success state after adoption request
+  if (adopt) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="lg:sticky lg:top-24"
+      >
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 shadow-xl border-2 border-green-200 max-w-lg mx-auto">
+          <div className="flex flex-col items-center text-center">
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4 animate-bounce">
+              <FaCheck className="w-10 h-10 text-green-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-green-800 mb-2">
+              Request Sent! 🎉
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Your adoption request for{" "}
+              <span className="font-semibold text-green-700">{petName}</span> has been sent
+              to the owner.
+            </p>
+            <div className="bg-white/80 rounded-xl p-4 w-full">
+              <p className="text-sm text-gray-500">Track your request status</p>
+              <Link
+                href="/dashboard/my-request"
+                className="inline-flex items-center gap-2 mt-2 text-[#E07C3C] font-medium hover:text-[#C96B2E] transition-colors"
+              >
+                <FaPaw className="text-xs" />
+                My Requests
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
 
+  // Adoption Form
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className="lg:sticky lg:top-24"
+    >
+      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#E07C3C]/10 to-[#F59E0B]/10 p-6 border-b border-gray-100">
+          <h2 className="text-2xl font-bold text-[#4A3728] flex items-center gap-2">
+            <FaPaw className="text-[#E07C3C]" />
+            Adoption Request
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Fill in the details to adopt {petName}
+          </p>
+        </div>
+
+        <form className="p-6 space-y-6">
+          {/* Pet Name */}
+          <div>
+            <Label className="text-sm font-medium text-[#4A3728] flex items-center gap-2">
+              <FaPaw className="text-[#E07C3C] text-xs" />
+              Pet Name
+            </Label>
+            <Input
+              placeholder={petName}
+              className="rounded-xl bg-gray-50 border-gray-200 cursor-default mt-1"
+              readOnly
+              value={petName}
+            />
+          </div>
+
+          {/* User Name */}
+          <div>
+            <Label className="text-sm font-medium text-[#4A3728] flex items-center gap-2">
+              <FaUser className="text-[#E07C3C] text-xs" />
+              Your Name
+            </Label>
+            <Input
+              placeholder={user?.name}
+              className="rounded-xl bg-gray-50 border-gray-200 cursor-default mt-1"
+              readOnly
+              value={user?.name}
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <Label className="text-sm font-medium text-[#4A3728] flex items-center gap-2">
+              <FaEnvelope className="text-[#E07C3C] text-xs" />
+              Email Address
+            </Label>
+            <Input
+              placeholder={user?.email}
+              className="rounded-xl bg-gray-50 border-gray-200 cursor-default mt-1"
+              readOnly
+              value={user?.email}
+            />
+          </div>
+
+          {/* Pickup Date */}
+          <div>
+            <Label className="text-sm font-medium text-[#4A3728] flex items-center gap-2">
+              <FaCalendar className="text-[#E07C3C] text-xs" />
+              Preferred Pickup Date
+            </Label>
+            <Input
+              type="date"
+              className="rounded-xl border-gray-200 focus:border-[#E07C3C] focus:ring-2 focus:ring-[#E07C3C]/20 mt-1"
+              onChange={(e) => setPickupDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              required
+            />
+            <p className="text-xs text-gray-400 mt-1">Select a date to pick up your new companion</p>
+          </div>
+
+          {/* Message */}
+          <div>
+            <Label className="text-sm font-medium text-[#4A3728] flex items-center gap-2 w-full">
+              <FaFileAlt className="text-[#E07C3C] text-xs" />
+              Message to Owner
+            </Label>
+            <TextArea
+              placeholder="Tell the owner why you'd love to adopt this pet..."
+              className="w-full rounded-xl border-gray-200 focus:border-[#E07C3C] focus:ring-2 focus:ring-[#E07C3C]/20 mt-1 min-h-[100px]"
+            />
+          </div>
+
+          {/* Submit Button */}
           <Button
             onClick={handleListings}
-            // onClick={() => setAdopt(true)}
-            className={"bg-[#3D6B4F] w-full shadow-sm"}
+            isLoading={isLoading}
+            isDisabled={isLoading}
+            className="w-full bg-[#E07C3C] hover:bg-[#C96B2E] text-white rounded-xl py-3 text-base font-medium shadow-md hover:shadow-lg transition-all duration-300"
           >
-            Adopt Now
+            {isLoading ? "Sending Request..." : "Send Adoption Request"}
           </Button>
+
+          <p className="text-xs text-gray-400 text-center">
+            By submitting, you agree to our adoption terms and conditions
+          </p>
         </form>
-      ) }
-    </div>
+      </div>
+    </motion.div>
   );
 };
 

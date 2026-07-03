@@ -1,123 +1,135 @@
-
 import Image from "next/image";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { PiDogFill } from "react-icons/pi";
 import BannerCard from "./BannerCard";
-import PetCard from "./PetCard";
 import WhyAdopt from "./WhyAdopt";
-import { SuccessIcon } from "@heroui/react";
 import SuccessStories from "./SuccessStories";
 import PetCare from "./PetCare";
 import AdoptionSteps from "./AdoptionSteps";
 import Link from "next/link";
+import AvailablePets from "./AvailablePets";
 
 const Banner = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-pet`);
-  const pets = await res.json();
-  return (
-    <div>
-      <div className="hero bg-[#FBF8F3] min-h-screen">
-        <div className="hero-content flex-col lg:flex-row-reverse">
-          {/* <img
-            src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
-            className="max-w-sm rounded-lg shadow-2xl"
-          /> */}
-          <Image
-            src={"/images/pet.png"}
-            alt="pet image"
-            width={700}
-            height={700}
-          ></Image>
-
-          <div>
-            <div className="badge badge-soft badge-sm p-3 bg-[#fcf3ef] text-[#C8714A] text-sm
-             rounded-4xl border-[#C8714A]  ">
-              <PiDogFill />
-              Bangladesh's #1 Adoption Platform
+  try {
+    return (
+      <div>
+        {/* Hero Section */}
+        <div className="hero bg-gradient-to-br from-[#FBF8F3] to-[#FFF5F0] min-h-screen">
+          <div className="hero-content flex-col lg:flex-row-reverse gap-12 px-4 sm:px-6 lg:px-8 py-12">
+            {/* Image */}
+            <div className="flex-1 flex justify-center">
+              <Image
+                src="/images/pet2.png"
+                alt="Happy pets waiting for adoption"
+                width={600}
+                height={600}
+                className="max-w-full h-auto rounded-2xl"
+                priority
+              />
             </div>
-            <h1 className="text-6xl font-bold">
-              Find a <span className="text-[#3D6B4F] text-italic font-serif">loving home</span> for
-              every paw
-            </h1>
-            <p className="py-6 text-xl">
-              Thousands of cats, dogs, birds & rabbits are waiting for their
-              forever family. Adopt, don't shop — and change a life today
-            </p>
 
-            <div className="grid lg:grid-cols-3 grid-cols-2 gap-4 container mx-auto mt-5">
-              <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-4xl font-bold text-[#3D6B4F]  text-italic font-serif">
-                  2500+
-                </h2>
-                <p>Pets available</p>
+            {/* Content */}
+            <div className="flex-1 space-y-6">
+              {/* Badge */}
+              <div className="badge badge-soft badge-sm p-3 bg-[#fcf3ef] text-[#C8714A] text-sm rounded-full border border-[#C8714A]/30 inline-flex items-center gap-2">
+                <PiDogFill className="w-4 h-4" />
+                Bangladesh's #1 Adoption Platform
               </div>
-              <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-4xl font-bold text-[#3D6B4F] text-italic font-serif">
-                  940
-                </h2>
-                <p>Adopted this month</p>
+
+              {/* Heading */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+                Find a{" "}
+                <span className="text-[#E07C3C] italic font-serif">
+                  loving home
+                </span>{" "}
+                for every pet
+              </h1>
+
+              {/* Description */}
+              <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
+                Thousands of cats, dogs, birds & rabbits are waiting for their
+                forever family. Adopt, don't shop — and change a life today
+              </p>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                <div className="card bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group p-4 rounded-xl border border-[#E07C3C]/10">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-[#E07C3C] italic font-serif">
+                    2500+
+                  </h2>
+                  <p className="text-sm text-gray-600">Pets available</p>
+                </div>
+                <div className="card bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group p-4 rounded-xl border border-[#E07C3C]/10">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-[#E07C3C] italic font-serif">
+                    940
+                  </h2>
+                  <p className="text-sm text-gray-600">Adopted this month</p>
+                </div>
+                <div className="card bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group p-4 rounded-xl border border-[#E07C3C]/10 col-span-2 lg:col-span-1">
+                  <h2 className="text-3xl sm:text-4xl font-bold text-[#E07C3C] italic font-serif">
+                    120+
+                  </h2>
+                  <p className="text-sm text-gray-600">Partner shelters</p>
+                </div>
               </div>
-              <div className="card-body shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-2 hover:scale-105 cursor-pointer group">
-                <h2 className="card-title text-4xl font-bold text-[#3D6B4F] text-italic font-serif">
-                  120+
-                </h2>
-                <p>Partner shelters</p>
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Link href="/allpets" className="w-full sm:w-auto">
+                  <button className="btn w-full sm:w-auto rounded-full px-6 sm:px-8 py-3 bg-[#E07C3C] hover:bg-[#C96B2E] text-white text-base sm:text-lg font-medium border-none shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                    Browse Pets <FaArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+                <Link href="#how-it-works" className="w-full sm:w-auto">
+                  <button className="btn w-full sm:w-auto rounded-full px-6 sm:px-8 py-3 bg-white hover:bg-gray-50 text-[#4A3728] text-base sm:text-lg font-medium border-2 border-[#E07C3C]/30 hover:border-[#E07C3C] shadow-sm hover:shadow-md transition-all duration-300">
+                    How it works
+                  </button>
+                </Link>
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row gap-4 mt-10">
-              <Link  href={"/allpets"} >
-              <button className="btn  rounded-4xl px-4 py-5 bg-[#3D6B4F] text-xl font-medium text-white">
-                Browse Pet <FaArrowRight />
-              </button></Link>
-              
-              <button className="btn text-xl font-medium  rounded-4xl px-4 py-5">
-                How it works
-              </button>
             </div>
           </div>
         </div>
-      </div>
-      <BannerCard></BannerCard>
 
-      {/* available pet     */}
-      <div className="bg-[#EBF3EE] pt-5 pb-10">
-        <div className="container mx-auto mt-20">
-          {/* Features pets */}
-          <div className="mb-5">
-            <div className="badge badge-soft mb-5 bg-[#bbcec2] text-[#3D6B4F] ">
-              Available now
-            </div>
-            <h1 className="text-5xl font-bold">
-              Meet your future <span className="text-[#3D6B4F]">companion</span>
-            </h1>
-            <p className="text-xl pt-4 pb-4 text-gray-500">
-              Browse pets from verified shelters and rescue centres across{" "}
-              <br /> Bangladesh.
-            </p>
-          </div>
-          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20 mb-20">
-            {pets.slice(3, 10).map((pet) => (
-              <PetCard key={pet._id} pet={pet}></PetCard>
-            ))}
-          </div>
+        {/* Banner Cards Section */}
+        <BannerCard />
+
+        {/* Available Pets Section */}
+        <AvailablePets />
+
+        {/* Why Adopt Section */}
+        <WhyAdopt />
+
+        {/* Success Stories Section */}
+        <SuccessStories />
+
+        {/* Pet Care Section */}
+        <PetCare />
+
+        {/* Adoption Steps Section */}
+        <AdoptionSteps />
+      </div>
+    );
+  } catch (error) {
+    console.error("Error in Banner component:", error);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FBF8F3]">
+        <div className="text-center p-8">
+          <h2 className="text-2xl font-bold text-[#E07C3C] mb-4">
+            Oops! Something went wrong
+          </h2>
+          <p className="text-gray-600 mb-6">
+            We're having trouble loading the pets. Please try again later.
+          </p>
+          <Link href="/">
+            <button className="btn rounded-full px-8 py-3 bg-[#E07C3C] text-white hover:bg-[#C96B2E] transition-all duration-300">
+              Refresh Page
+            </button>
+          </Link>
         </div>
       </div>
-
-      {/* why adopt */}
-      <WhyAdopt></WhyAdopt>
-
-      {/* success */}
-      <SuccessStories></SuccessStories>
-
-      {/* pet care */}
-      <PetCare></PetCare>
-       
-       {/* adoption steps */}
-      <AdoptionSteps></AdoptionSteps>
-      
-    </div>
-  );
+    );
+  }
 };
 
 export default Banner;
