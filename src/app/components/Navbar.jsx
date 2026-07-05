@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/allpets", label: "All Pets" },
+    { href: "/allpets", label: "All Pet" },
     { href: "/dashboard/my-listings", label: "My Listings" },
     { href: "/dashboard/add-pet", label: "Add Pet" },
     { href: "/dashboard/my-request", label: "My Request" },

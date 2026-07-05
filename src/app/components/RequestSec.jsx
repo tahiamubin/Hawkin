@@ -65,17 +65,17 @@ const RequestSec = ({ listing }) => {
     const statusMap = {
       pending: {
         icon: <FaClock className="text-yellow-500" />,
-        label: "Pending",
+        label: "pending",
         className: "bg-yellow-50 text-yellow-700 border-yellow-200"
       },
       approved: {
         icon: <FaCheck className="text-green-500" />,
-        label: "Approved",
+        label: "approved",
         className: "bg-green-50 text-green-700 border-green-200"
       },
       rejected: {
         icon: <FaTimes className="text-red-500" />,
-        label: "Rejected",
+        label: "rejected",
         className: "bg-red-50 text-red-700 border-red-200"
       },
       completed: {

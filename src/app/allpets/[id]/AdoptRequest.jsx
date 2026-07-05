@@ -45,6 +45,7 @@ const AdoptRequest = ({ pet }) => {
 
   const isOwner = user?.email === petOwnerEmail;
 
+
   const handleListings = async () => {
     if (!pickupDate) {
       toast.error("Please select a pickup date");
@@ -56,6 +57,7 @@ const AdoptRequest = ({ pet }) => {
       userName: user?.name,
       userEmail: user?.email,
       userImage: user?.image,
+      userId: user?.id , 
       petId,
       petName,
       breed,
@@ -68,6 +70,7 @@ const AdoptRequest = ({ pet }) => {
       imageUrl,
       vaccine,
       description,
+      status: 'pending',
       pickupDate,
       requestDate: new Date().toISOString(),
     };
